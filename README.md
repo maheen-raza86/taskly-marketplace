@@ -2,7 +2,7 @@
 
 A Laravel-based marketplace where customers can find and book local service providers (plumbers, tutors, cleaners, electricians, etc.).
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/YOUR_USERNAME/taskly)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/maheen-raza86/taskly-marketplace)
 
 ---
 
@@ -247,7 +247,7 @@ Returns HTTP 403 if the authenticated user's role doesn't match.
 
 Click the **Deploy to Render** button at the top of this README, or follow the manual steps below.
 
-> **Replace `YOUR_USERNAME/taskly`** in the button URL with your actual GitHub repository path before using it.
+> The button links to `https://github.com/maheen-raza86/taskly-marketplace`.
 
 ### Manual Deploy Steps
 
@@ -256,7 +256,7 @@ Click the **Deploy to Render** button at the top of this README, or follow the m
    git init
    git add .
    git commit -m "Initial commit"
-   git remote add origin https://github.com/YOUR_USERNAME/taskly.git
+   git remote add origin https://github.com/maheen-raza86/taskly-marketplace.git
    git push -u origin main
    ```
 
