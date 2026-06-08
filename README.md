@@ -2,6 +2,8 @@
 
 A Laravel-based marketplace where customers can find and book local service providers (plumbers, tutors, cleaners, electricians, etc.).
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/YOUR_USERNAME/taskly)
+
 ---
 
 ## Tech Stack
@@ -231,3 +233,70 @@ Returns HTTP 403 if the authenticated user's role doesn't match.
 | Provider | provider2@marketplace.com      | password   |
 | Customer | customer1@marketplace.com      | password   |
 | Customer | customer2@marketplace.com      | password   |
+
+---
+
+## Deploying to Render.com
+
+### Prerequisites
+
+- A free [Render account](https://render.com)
+- This repository pushed to GitHub
+
+### One-click Deploy
+
+Click the **Deploy to Render** button at the top of this README, or follow the manual steps below.
+
+> **Replace `YOUR_USERNAME/taskly`** in the button URL with your actual GitHub repository path before using it.
+
+### Manual Deploy Steps
+
+1. **Push to GitHub**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/YOUR_USERNAME/taskly.git
+   git push -u origin main
+   ```
+
+2. **Create services on Render**
+   - Go to [dashboard.render.com](https://dashboard.render.com) → New → Blueprint
+   - Connect your GitHub repo — Render detects `render.yaml` automatically
+   - This creates both the PostgreSQL database (`taskly-db`) and the web service (`taskly-app`)
+
+3. **Set the `APP_KEY`**
+   Render auto-generates `APP_KEY` via `generateValue: true` in `render.yaml`. No manual step needed.
+
+4. **First deploy**
+   The build command runs automatically:
+   ```
+   composer install --no-dev --optimize-autoloader
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   php artisan migrate --force
+   php artisan db:seed --force
+   ```
+
+5. **Access your app** at `https://taskly-app.onrender.com`
+
+### Environment Variables on Render
+
+All variables are defined in `render.yaml`. The database connection string is injected automatically from the linked `taskly-db` PostgreSQL service via `DATABASE_URL`.
+
+| Variable | Value |
+|---|---|
+| `APP_ENV` | `production` |
+| `APP_DEBUG` | `false` |
+| `DB_CONNECTION` | `pgsql` |
+| `DATABASE_URL` | auto-injected from `taskly-db` |
+| `SESSION_DRIVER` | `database` |
+| `CACHE_STORE` | `database` |
+| `LOG_CHANNEL` | `stderr` |
+
+### Notes on Free Tier
+
+- Render's free web services **spin down after 15 minutes of inactivity** — first request after sleep takes ~30s.
+- The free PostgreSQL instance is limited to 1 GB and expires after 90 days.
+- Uploaded files are lost on redeploy (ephemeral disk) — integrate S3 or Cloudflare R2 for persistent storage.
