@@ -7,19 +7,13 @@ databases:
 services:
   - type: web
     name: taskly-app
-    runtime: php
+    runtime: docker
     plan: free
     region: oregon
 
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
-      php artisan migrate --force
-      php artisan db:seed --force
-
-    startCommand: php artisan serve --host 0.0.0.0 --port 10000
+    # Docker handles the build and start — no buildCommand/startCommand needed.
+    # The Dockerfile exposes port 80 (Apache); Render routes traffic to it.
+    dockerfilePath: ./Dockerfile
 
     envVars:
       - key: APP_NAME
@@ -37,7 +31,7 @@ services:
       - key: APP_URL
         value: https://taskly-app.onrender.com
 
-      # Database — injected from the taskly-db service above
+      # Database — connection string injected from the taskly-db service above
       - key: DB_CONNECTION
         value: pgsql
 

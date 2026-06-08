@@ -1,0 +1,47 @@
+# Dependencies — rebuilt inside the image
+/vendor
+/node_modules
+
+# Local environment secrets — never bake into the image
+.env
+.env.backup
+.env.production
+.env.*.local
+
+# Git history
+.git
+.gitignore
+.gitattributes
+
+# IDE / editor files
+/.idea
+/.vscode
+/.fleet
+*.code-workspace
+
+# Tests and dev tooling
+/tests
+phpunit.xml
+.phpunit.result.cache
+.phpunit.cache
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+
+# Logs and cached build artefacts
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+!/storage/framework/cache/data/.gitignore
+!/storage/framework/sessions/.gitignore
+!/storage/framework/views/.gitignore
+
+# Docker files (no need to copy into themselves)
+Dockerfile
+.dockerignore
+
+# Render / deployment docs
+render.yaml
+README.md
