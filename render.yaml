@@ -12,8 +12,11 @@ services:
     region: oregon
 
     # Docker handles the build and start — no buildCommand/startCommand needed.
-    # The Dockerfile exposes port 80 (Apache); Render routes traffic to it.
+    # The Dockerfile exposes port 10000 (Apache); Render routes traffic to it.
     dockerfilePath: ./Dockerfile
+    dockerContext: .
+    port: 10000
+    healthCheckPath: /
 
     envVars:
       - key: APP_NAME
