@@ -21,10 +21,10 @@ class ServiceController extends Controller
             ->whereHas('provider.providerProfile', fn ($q) => $q->where('is_approved', true));
 
         if ($request->filled('keyword')) {
-            $keyword = $request->input('keyword');
+            $keyword = strtolower($request->input('keyword'));
             $query->where(function ($q) use ($keyword) {
-                $q->where('title', 'like', "%{$keyword}%")
-                  ->orWhere('description', 'like', "%{$keyword}%");
+                $q->whereRaw('LOWER(title) LIKE ?', ["%{$keyword}%"])
+                  ->orWhereRaw('LOWER(description) LIKE ?', ["%{$keyword}%"]);
             });
         }
 
@@ -33,8 +33,8 @@ class ServiceController extends Controller
         }
 
         if ($request->filled('city')) {
-            $city = $request->input('city');
-            $query->whereHas('provider', fn ($q) => $q->where('city', 'like', "%{$city}%"));
+            $city = strtolower($request->input('city'));
+            $query->whereHas('provider', fn ($q) => $q->whereRaw('LOWER(city) LIKE ?', ["%{$city}%"]));
         }
 
         if ($request->filled('price_type')) {

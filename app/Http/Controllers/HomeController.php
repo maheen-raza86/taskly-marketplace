@@ -19,12 +19,12 @@ class HomeController extends Controller
             ->where('is_active', true)
             ->whereHas('provider.providerProfile', fn ($q) => $q->where('is_approved', true));
 
-        // Filter by keyword (title or description)
+        // Filter by keyword (title or description, case-insensitive)
         if ($request->filled('keyword')) {
-            $keyword = $request->input('keyword');
+            $keyword = strtolower($request->input('keyword'));
             $query->where(function ($q) use ($keyword) {
-                $q->where('title', 'like', "%{$keyword}%")
-                  ->orWhere('description', 'like', "%{$keyword}%");
+                $q->whereRaw('LOWER(title) LIKE ?', ["%{$keyword}%"])
+                  ->orWhereRaw('LOWER(description) LIKE ?', ["%{$keyword}%"]);
             });
         }
 
@@ -33,10 +33,10 @@ class HomeController extends Controller
             $query->where('category_id', $request->input('category_id'));
         }
 
-        // Filter by provider city
+        // Filter by provider city (case-insensitive, works on MySQL and PostgreSQL)
         if ($request->filled('city')) {
-            $city = $request->input('city');
-            $query->whereHas('provider', fn ($q) => $q->where('city', 'like', "%{$city}%"));
+            $city = strtolower($request->input('city'));
+            $query->whereHas('provider', fn ($q) => $q->whereRaw('LOWER(city) LIKE ?', ["%{$city}%"]));
         }
 
         $services = $query->latest()->paginate(12)->withQueryString();
