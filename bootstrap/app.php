@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withProviders()
     ->withMiddleware(function (Middleware $middleware) {
+        // Trust all proxies — required for Render.com (and any reverse-proxy host)
+        // so that asset(), url(), and redirect() use the correct https:// scheme.
+        $middleware->trustProxies(at: '*');
+
         // Register the CheckRole middleware alias
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
