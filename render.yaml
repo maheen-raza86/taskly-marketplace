@@ -29,10 +29,10 @@ services:
         value: "false"
 
       - key: APP_KEY
-        generateValue: true
+        value: "base64:+ZhckujcsPjnBpSyd2er0WdfRRGZGfJ5rxrfblgjj6A="
 
       - key: APP_URL
-        value: https://taskly-app.onrender.com
+        value: https://taskly-app-wtus.onrender.com
 
       # Database — connection string injected from the taskly-db service above
       - key: DB_CONNECTION
